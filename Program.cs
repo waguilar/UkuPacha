@@ -1,2 +1,2 @@
-﻿using var game = new UkuPacha.Game1();
+﻿using var game = new UkuPacha.MainGame();
 game.Run();
