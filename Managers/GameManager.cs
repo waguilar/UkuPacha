@@ -1,5 +1,6 @@
-﻿
-namespace UkuPacha
+﻿using UkuPacha.Models;
+
+namespace UkuPacha.Managers
 {
     public class GameManager
     {
@@ -12,6 +13,7 @@ namespace UkuPacha
 
         public void Update()
         {
+            InputManager.Update();
             _character.Update();
         }
 

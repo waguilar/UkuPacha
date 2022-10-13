@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace UkuPacha
+namespace UkuPacha.Models
 {
     public class Animation
     {
@@ -24,7 +24,7 @@ namespace UkuPacha
             var frameWidth = texture.Width / framesx;
             var frameHeight = texture.Height;
 
-            for(int i = 0; i < _frames; i++)
+            for (int i = 0; i < _frames; i++)
             {
                 _sourceRectangles.Add(new(i * frameWidth, 0, frameWidth, frameHeight));
             }
@@ -50,7 +50,7 @@ namespace UkuPacha
         {
             if (!_active) return;
             _frameTimeLeft -= Globals.TotalSeconds;
-            if( _frameTimeLeft <= 0 )
+            if (_frameTimeLeft <= 0)
             {
                 _frameTimeLeft += _frameTime;
                 _frame = (_frame + 1) % _frames;
