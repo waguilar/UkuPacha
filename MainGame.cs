@@ -7,37 +7,35 @@ namespace UkuPacha
 {
     public class MainGame : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private GameManager _gameManager;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private GameManager gameManager;
 
         public MainGame()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            _graphics.PreferredBackBufferWidth = 1024;
-            _graphics.PreferredBackBufferHeight = 768;
-            _graphics.ApplyChanges();
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 768;
+            graphics.ApplyChanges();
 
             Globals.Content = Content;
 
-            _gameManager = new();
-            _gameManager.Init();
+            gameManager = new();
+            gameManager.Init();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            // TODO: use this.Content to load your game content here
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            Globals.SpriteBatch = _spriteBatch;
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            Globals.SpriteBatch = spriteBatch;
         }
 
         protected override void Update(GameTime gameTime)
@@ -45,9 +43,8 @@ namespace UkuPacha
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
             Globals.Update(gameTime);
-            _gameManager.Update();
+            gameManager.Update();
 
             base.Update(gameTime);
         }
@@ -56,10 +53,9 @@ namespace UkuPacha
         {
             GraphicsDevice.Clear(Color.Beige);
 
-            // TODO: Add your drawing code here
-            _spriteBatch.Begin();
-            _gameManager.Draw();
-            _spriteBatch.End();
+            spriteBatch.Begin();
+            gameManager.Draw();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -6,36 +6,33 @@ namespace UkuPacha.Managers
 {
     public class AnimationManager
     {
-        private readonly Dictionary<object, Animation> _anims = new();
-        private object _lastKey;
+        private readonly Dictionary<object, Animation> animDictionary = new();
+        private object lastKey;
 
         public void AddAnimation(object key, Animation animation)
         {
-            _anims.Add(key, animation);
-            _lastKey ??= key;
+            animDictionary.Add(key, animation);
+            lastKey ??= key;
         }
 
         public void Update(object key)
         {
-            //_anims[key].Start();
-            //_anims[key].Update();
-            //_lastKey = key;
-            if (_anims.ContainsKey(key))
+            if (animDictionary.ContainsKey(key))
             {
-                _anims[key].Start();
-                _anims[key].Update();
-                _lastKey = key;
+                animDictionary[key].Start();
+                animDictionary[key].Update();
+                lastKey = key;
             }
             else
             {
-                _anims[_lastKey].Stop();
-                _anims[_lastKey].Reset();
+                animDictionary[lastKey].Stop();
+                animDictionary[lastKey].Reset();
             }
         }
 
         public void Draw(Vector2 position)
         {
-            _anims[_lastKey].Draw(position);
+            animDictionary[lastKey].Draw(position);
         }
     }
 }

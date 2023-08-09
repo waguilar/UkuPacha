@@ -4,62 +4,51 @@ using System.Collections.Generic;
 
 namespace UkuPacha.Models
 {
-    public class Animation
+    public class Animation : BaseAnimation
     {
-        private readonly Texture2D _texture;
-        private readonly List<Rectangle> _sourceRectangles = new();
-        private readonly int _frames;
-        private int _frame;
-        private readonly float _frameTime;
-        private float _frameTimeLeft;
-        private bool _active = true;
+        private readonly Texture2D texture;
+        private readonly List<Rectangle> sourceRectangles = new();
+        private readonly int totalFrames;
+        private int currentFrame;
+        private readonly float frameTime;
+        private float frameTimeLeft;
 
         public Animation(Texture2D texture, int framesx, float frameTime)
         {
-            _texture = texture;
-            _frameTime = frameTime;
-            _frameTimeLeft = _frameTime;
-            _frames = framesx;
+            this.texture = texture;
+            this.frameTime = frameTime;
+            frameTimeLeft = this.frameTime;
+            totalFrames = framesx;
 
             var frameWidth = texture.Width / framesx;
             var frameHeight = texture.Height;
 
-            for (int i = 0; i < _frames; i++)
+            for (int i = 0; i < totalFrames; i++)
             {
-                _sourceRectangles.Add(new(i * frameWidth, 0, frameWidth, frameHeight));
+                sourceRectangles.Add(new(i * frameWidth, 0, frameWidth, frameHeight));
             }
         }
 
-        public void Stop()
+        override public void Reset()
         {
-            _active = false;
+            currentFrame = 0;
+            frameTimeLeft = frameTime;
         }
 
-        public void Start()
+        override public void Update()
         {
-            _active = true;
-        }
-
-        public void Reset()
-        {
-            _frame = 0;
-            _frameTimeLeft = _frameTime;
-        }
-
-        public void Update()
-        {
-            if (!_active) return;
-            _frameTimeLeft -= Globals.TotalSeconds;
-            if (_frameTimeLeft <= 0)
+            if (!active) return;
+            frameTimeLeft -= Globals.TimeSinceLastUpdate;
+            if (frameTimeLeft <= 0)
             {
-                _frameTimeLeft += _frameTime;
-                _frame = (_frame + 1) % _frames;
+                frameTimeLeft += frameTime;
+                currentFrame = (currentFrame + 1) % totalFrames;
             }
         }
 
-        public void Draw(Vector2 pos)
+        override public void Draw(Vector2 pos)
         {
-            Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
+            Globals.SpriteBatch.Draw(texture, pos, sourceRectangles[currentFrame], Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
         }
     }
 }
