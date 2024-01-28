@@ -31,8 +31,8 @@ namespace UkuPacha.Managers
                     direction.X++;
                 }
 
-                //if (keyboardState.IsKeyDown(Keys.W)) direction.Y--;
-                //if (keyboardState.IsKeyDown(Keys.S)) direction.Y++;
+                if (keyboardState.IsKeyDown(Keys.W)) direction.Y--;
+                if (keyboardState.IsKeyDown(Keys.S)) direction.Y++;
             }
         }
     }

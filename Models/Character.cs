@@ -4,14 +4,14 @@ using UkuPacha.Managers;
 
 namespace UkuPacha.Models
 {
-    public class Character
+    public class Character : Sprite
     {
         private static Texture2D standingTexture, forwardTexture, backwardsTexture;
         private readonly Animation standingAnim, forwardAnim, backwardsAnim;
-        private Vector2 position;
+        private Vector2 minPosition, maxPosition;
         private readonly float speed = 200f;
 
-        public Character(Vector2 position)
+        public Character(Vector2 position) : base(position) 
         {
             //Standing
             standingTexture ??= Globals.Content.Load<Texture2D>("ryu_standing");
@@ -25,19 +25,33 @@ namespace UkuPacha.Models
             backwardsTexture ??= Globals.Content.Load<Texture2D>("ryu_backward");
             backwardsAnim = new Animation(backwardsTexture, 11, 0.08f);
 
+            Position = position;
+            Origin = new Vector2(standingAnim.FrameWidth / 2, standingAnim.FrameHeight / 2);
+        }
 
-            this.position = position;
+        public void SetBounds(Point mapSize, Point tileSize)
+        {
+            //minPosition = new Vector2((-tileSize.X / 2) + Origin.X, (-tileSize.Y / 2) + Origin.Y);
+            //maxPosition = new Vector2(mapSize.X - (tileSize.X / 2) - Origin.X, mapSize.Y - (tileSize.X / 2) - Origin.Y);
+            minPosition = new Vector2((-tileSize.X / 2), (-tileSize.Y / 2));
+            maxPosition = new Vector2(mapSize.X - (tileSize.X / 2) - standingAnim.FrameWidth, mapSize.Y - (tileSize.Y / 2) - standingAnim.FrameHeight);
         }
 
         public void Update()
         {
             if (InputManager.Moving)
             {
-                position += Vector2.Normalize(InputManager.Direction) * speed * Globals.TimeSinceLastUpdate;
-                if(InputManager.Forward)
+                Position += Vector2.Normalize(InputManager.Direction) * speed * Globals.TimeSinceLastUpdate;
+                Position = Vector2.Clamp(Position, minPosition, maxPosition);
+                if (InputManager.Forward)
+                {
                     forwardAnim.Update();
-                if(InputManager.Backwards) 
+                }
+                if(InputManager.Backwards)
+                {
                     backwardsAnim.Update();
+                }
+                    
             }
             else
             {
@@ -50,13 +64,13 @@ namespace UkuPacha.Models
             if (InputManager.Moving)
             {
                 if (InputManager.Forward)
-                    forwardAnim.Draw(position);
+                    forwardAnim.Draw(Position);
                 if (InputManager.Backwards)
-                    backwardsAnim.Draw(position);
+                    backwardsAnim.Draw(Position);
             }
             else
             {
-                standingAnim.Draw(position);
+                standingAnim.Draw(Position);
             }
         }
     }

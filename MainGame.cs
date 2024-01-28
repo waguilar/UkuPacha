@@ -20,8 +20,9 @@ namespace UkuPacha
 
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 768;
+            Globals.WindowSize = new Point(1024, 768);
+            graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
+            graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
             graphics.ApplyChanges();
 
             Globals.Content = Content;
@@ -53,9 +54,7 @@ namespace UkuPacha
         {
             GraphicsDevice.Clear(Color.Beige);
 
-            spriteBatch.Begin();
             gameManager.Draw();
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }
