@@ -1,0 +1,49 @@
+{
+  "textureAtlas": {
+    "texture": "char_a_p1_0bas_humn_v01.png",
+    "regionWidth": 64,
+    "regionHeight": 64
+  },
+  "cycles": {
+    "walk_up": {
+      "frames": [40,41,42,43,44,45],
+      "isLooping": true,
+      "frameDuration": 0.135
+    },
+    "walk_down": {
+      "frames": [32,33,34,35,36,37],
+      "isLooping": true,
+      "frameDuration": 0.135
+    },
+    "walk_right": {
+      "frames": [48,49,50,51,52,53],
+      "isLooping": true,
+      "frameDuration": 0.135
+    },
+    "walk_left": {
+      "frames": [56,57,58,59,60,61],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "run_up": {
+      "frames": [40,41,46,46,43,44,47,47],
+      "isLooping": true,
+      "frameDuration": 0.08
+    },
+    "run_down": {
+      "frames": [32,33,38,38,35,36,39,39],
+      "isLooping": true,
+      "frameDuration": 0.08
+    },
+    "run_right": {
+      "frames": [48,49,54,54,51,52,55,55],
+      "isLooping": true,
+      "frameDuration": 0.08
+    },
+    "run_left": {
+      "frames": [56,57,62,62,59,60,63,63],
+      "isLooping": true,
+      "frameDuration": 0.08
+    }
+  }
+}

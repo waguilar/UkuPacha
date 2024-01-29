@@ -28,9 +28,9 @@ namespace UkuPacha.Managers
         private void CalculateTranslation()
         {
             var dx = (Globals.WindowSize.X / 2) - character.Position.X;
-            //dx = MathHelper.Clamp(dx, - map.MapSize.X + Globals.WindowSize.X + ( map.TileSize.X / 2), map.TileSize.X / 2);
+            dx = MathHelper.Clamp(dx, - map.MapSize.X + Globals.WindowSize.X + ( map.TileSize.X / 2), map.TileSize.X / 2);
             var dy = (Globals.WindowSize.Y / 2) - character.Position.Y;
-            //dy = MathHelper.Clamp(dy, - map.MapSize.Y + Globals.WindowSize.Y + ( map.TileSize.Y / 2), map.TileSize.Y / 2);
+            dy = MathHelper.Clamp(dy, - map.MapSize.Y + Globals.WindowSize.Y + ( map.TileSize.Y / 2), map.TileSize.Y / 2);
             translation = Matrix.CreateTranslation(dx, dy, 0f);
         }
 

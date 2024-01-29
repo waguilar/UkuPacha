@@ -1,32 +1,31 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.Content;
 using UkuPacha.Managers;
 
 namespace UkuPacha.Models
 {
     public class Character : Sprite
     {
-        private static Texture2D standingTexture, forwardTexture, backwardsTexture;
-        private readonly Animation standingAnim, forwardAnim, backwardsAnim;
         private Vector2 minPosition, maxPosition;
         private readonly float speed = 200f;
+
+        private AnimatedSprite _motwSprite;
+        private Vector2 _motwPosition;
 
         public Character(Vector2 position) : base(position) 
         {
             //Standing
-            standingTexture ??= Globals.Content.Load<Texture2D>("ryu_standing");
-            standingAnim = new Animation(standingTexture, 10, 0.08f);
-
-            //Forward
-            forwardTexture ??= Globals.Content.Load<Texture2D>("ryu_forward");
-            forwardAnim = new Animation(forwardTexture, 11, 0.08f);
-
-            //Backwards
-            backwardsTexture ??= Globals.Content.Load<Texture2D>("ryu_backward");
-            backwardsAnim = new Animation(backwardsTexture, 11, 0.08f);
+            var spritesheet = Globals.Content.Load<SpriteSheet>("char_a_p1_0bas_humn_v01.sf", new JsonContentLoader());
+            var sprite = new AnimatedSprite(spritesheet);
+            sprite.Play("walk_down");
+            _motwPosition = position;
+            _motwSprite = sprite;
 
             Position = position;
-            Origin = new Vector2(standingAnim.FrameWidth / 2, standingAnim.FrameHeight / 2);
+            //Origin = new Vector2(standingAnim.FrameWidth / 2, standingAnim.FrameHeight / 2);
         }
 
         public void SetBounds(Point mapSize, Point tileSize)
@@ -34,9 +33,10 @@ namespace UkuPacha.Models
             //minPosition = new Vector2((-tileSize.X / 2) + Origin.X, (-tileSize.Y / 2) + Origin.Y);
             //maxPosition = new Vector2(mapSize.X - (tileSize.X / 2) - Origin.X, mapSize.Y - (tileSize.X / 2) - Origin.Y);
             minPosition = new Vector2((-tileSize.X / 2), (-tileSize.Y / 2));
-            maxPosition = new Vector2(mapSize.X - (tileSize.X / 2) - standingAnim.FrameWidth, mapSize.Y - (tileSize.Y / 2) - standingAnim.FrameHeight);
+            maxPosition = new Vector2(mapSize.X - (tileSize.X / 2), mapSize.Y - (tileSize.Y / 2));
         }
 
+        string animation = "walk_down";
         public void Update()
         {
             if (InputManager.Moving)
@@ -45,33 +45,32 @@ namespace UkuPacha.Models
                 Position = Vector2.Clamp(Position, minPosition, maxPosition);
                 if (InputManager.Forward)
                 {
-                    forwardAnim.Update();
+                    animation = "walk_right";
                 }
                 if(InputManager.Backwards)
                 {
-                    backwardsAnim.Update();
+                    animation = "walk_left";
                 }
-                    
+                if(InputManager.Upwards)
+                {
+                    animation = "walk_up";
+                }
+                if (InputManager.Downwards)
+                {
+                    animation = "walk_down";
+                }
+
+                _motwSprite.Play(animation);
+                _motwSprite.Update(Globals.TimeSinceLastUpdate);
             }
             else
             {
-                standingAnim.Update();
             }
         }
 
         public void Draw()
         {
-            if (InputManager.Moving)
-            {
-                if (InputManager.Forward)
-                    forwardAnim.Draw(Position);
-                if (InputManager.Backwards)
-                    backwardsAnim.Draw(Position);
-            }
-            else
-            {
-                standingAnim.Draw(Position);
-            }
+            Globals.SpriteBatch.Draw(_motwSprite, Position);
         }
     }
 }
